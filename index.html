@@ -75,6 +75,15 @@ button.danger {
 }
 button.danger:hover { background: #fef2f2; }
 
+button.continue-btn {
+  background: #10b981;
+  color: #fff;
+  border-color: #10b981;
+  font-weight: 500;
+}
+button.continue-btn:hover { background: #059669; border-color: #059669; }
+
+
 .practice-card {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -302,6 +311,8 @@ button.danger:hover { background: #fef2f2; }
           </div>
         </div>
         <button id="retryBtn" class="primary">Try Again</button>
+        <button id="continueBtn" class="continue-btn">Continue +30s</button>
+
       </div>
     </div>
 
@@ -379,6 +390,8 @@ button.danger:hover { background: #fef2f2; }
   const timeLimitSel = document.getElementById('timeLimit');
   const startBtn = document.getElementById('startBtn');
   const retryBtn = document.getElementById('retryBtn');
+  const continueBtn = document.getElementById("continueBtn");
+
   const exitBtn = document.getElementById('exitBtn');
   const practiceArea = document.getElementById('practiceArea');
   const resultsArea = document.getElementById('resultsArea');
@@ -404,7 +417,8 @@ button.danger:hover { background: #fef2f2; }
     targetChars: [],
     startTime: null,
     timerInterval: null,
-    completedEarly: false
+    completedEarly: false,
+    endedByTimeout: false
   };
 
   function loadHistory() {
@@ -508,6 +522,7 @@ button.danger:hover { background: #fef2f2; }
       }
 
       if (state.timeRemaining <= 0) {
+        state.endedByTimeout = true;
         endPractice();
       }
     }
@@ -522,6 +537,7 @@ button.danger:hover { background: #fef2f2; }
    state.startTime = Date.now();
    state.phase = 'active';
    state.completedEarly = false;
+   state.endedByTimeout = false;
 
    renderTarget();
    inputArea.value = '';
@@ -573,7 +589,13 @@ button.danger:hover { background: #fef2f2; }
    resultsHeading.textContent = state.completedEarly ? 'Well Done!' : (state.timeLimit === 0 ? 'Practice Complete' : 'Time\'s Up!');
 
    practiceArea.classList.add('hidden');
+   retryBtn.classList.remove('hidden');
    resultsArea.classList.remove('hidden');
+   if (state.endedByTimeout) {
+     continueBtn.classList.remove('hidden');
+   } else {
+     continueBtn.classList.add('hidden');
+   }
     exitBtn.classList.remove('hidden');
 
    saveHistory({
@@ -587,6 +609,26 @@ button.danger:hover { background: #fef2f2; }
    });
 
    renderHistory();
+ }
+
+  function continuePractice() {
+   state.endedByTimeout = false;
+   state.phase = "active";
+   state.timeRemaining += 30;
+
+   inputArea.disabled = false;
+   inputArea.focus();
+   timerEl.classList.remove("timer-warning");
+   timerEl.textContent = state.timeRemaining + "s";
+
+   continueBtn.classList.add("hidden");
+   retryBtn.classList.add("hidden");
+
+   practiceArea.classList.remove("hidden");
+   resultsArea.classList.add("hidden");
+
+   clearInterval(state.timerInterval);
+   state.timerInterval = setInterval(tick, 1000);
  }
 
   function renderHistory() {
@@ -651,6 +693,10 @@ button.danger:hover { background: #fef2f2; }
 
   startBtn.addEventListener('click', startPractice);
  retryBtn.addEventListener('click', startPractice);
+  continueBtn.addEventListener('click', function() {
+    retryBtn.classList.remove('hidden');
+    continuePractice();
+  });
   exitBtn.addEventListener('click', exitPractice);
 
   inputArea.addEventListener('input', updateComparison);

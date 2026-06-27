@@ -1,0 +1,24 @@
+{
+  "name": "typing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reF0o0/codex-typing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/reF0o0/codex-typing/issues"
+  },
+  "homepage": "https://github.com/reF0o0/codex-typing#readme",
+  "dependencies": {
+    "playwright": "^1.61.1"
+  }
+}
