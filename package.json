@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reF0o0/codex-typing.git"
+    "url": "git+https://github.com/reF0o0/codex_typing.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/reF0o0/codex-typing/issues"
+    "url": "https://github.com/reF0o0/codex_typing/issues"
   },
-  "homepage": "https://github.com/reF0o0/codex-typing#readme",
+  "homepage": "https://github.com/reF0o0/codex_typing#readme",
   "dependencies": {
     "playwright": "^1.61.1"
   }
