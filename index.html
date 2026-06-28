@@ -271,13 +271,10 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
         <option value="hard">Hard</option>
       </select>
       <select id="timeLimit">
-        <option value="15">15s</option>
         <option value="30">30s</option>
         <option value="60" selected>60s</option>
-        <option value="90">90s</option>
-        <option value="120">120s</option>
-        <option value="180">180s</option>
         <option value="0">Unlimited</option>
+        <option value="120">120s</option>
       </select>
       <button id="startBtn" class="primary">Start</button>
       <button id="exitBtn" class="danger hidden">Exit</button>
@@ -289,7 +286,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
       <div id="targetDisplay" class="target-display"></div>
       <div class="stats-bar">
         <div class="stat">Time: <span id="timer" class="stat-value">60s</span></div>
-        <div class="stat">WPM: <span id="liveWpm" class="stat-value">0</span></div>
+        <div class="stat">字母/分: <span id="liveWpm" class="stat-value">0</span></div>
         <div class="stat">Accuracy: <span id="liveAccuracy" class="stat-value">100%</span></div>
         <div class="stat">Chars: <span id="liveChars" class="stat-value">0</span></div>
       </div>
@@ -302,7 +299,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
         <div class="results-grid">
           <div class="result-item">
             <div class="value" id="resultWpm">0</div>
-            <div class="label">WPM</div>
+            <div class="label">每分钟打的字母数</div>
           </div>
           <div class="result-item">
             <div class="value" id="resultAccuracy">0%</div>
@@ -489,7 +486,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
     const totalTyped = input.length;
     const accuracy = totalTyped > 0 ? Math.round((correctCount / totalTyped) * 100) : 100;
     const elapsed = (Date.now() - state.startTime) / 1000;
-    const wpm = elapsed > 0 ? Math.round((correctCount / 5) / (elapsed / 60)) : 0;
+    const wpm = elapsed > 0 ? Math.round(correctCount / (elapsed / 60)) : 0;
 
     liveWpmEl.textContent = wpm;
     liveAccuracyEl.textContent = accuracy + '%';
@@ -516,7 +513,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
     for (let i = 0; i < Math.min(input.length, state.targetChars.length); i++) {
       if (input[i] === state.targetChars[i]) correctCount++;
     }
-    const wpm = elapsed > 0 ? Math.round((correctCount / 5) / (elapsed / 60)) : 0;
+    const wpm = elapsed > 0 ? Math.round(correctCount / (elapsed / 60)) : 0;
     liveWpmEl.textContent = wpm;
 
     if (state.timeLimit !== 0) {
@@ -584,7 +581,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
    const accuracy = totalTyped > 0 ? Math.round((correctCount / totalTyped) * 100) : 100;
    const elapsedSec = Math.round((Date.now() - state.startTime) / 1000);
    const elapsedMin = elapsedSec / 60;
-   const wpm = elapsedMin > 0 ? Math.round((correctCount / 5) / elapsedMin) : 0;
+   const wpm = elapsedMin > 0 ? Math.round(correctCount / elapsedMin) : 0;
 
    resultWpmEl.textContent = wpm;
    resultAccuracyEl.textContent = accuracy + '%';
@@ -660,7 +657,7 @@ button.continue-btn:hover { background: #059669; border-color: #059669; }
             <th>Date</th>
             <th>Difficulty</th>
             <th>Time</th>
-            <th>WPM</th>
+            <th>字母/分</th>
             <th>Accuracy</th>
             <th>Text</th>
           </tr>
